@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'user', loadChildren: () => import('./user/user.module').then(u => u.UserModule), canActivate: [AuthGuard] },
   { path: 'contact-us', component: ContactUsComponent },
   { path: 'faqs', component: FaqsComponent },
-  { path: '', redirectTo: '/auth', pathMatch: 'full' },
+  { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
   { path: '**', component: PagenotfoundComponent }
 ];
 

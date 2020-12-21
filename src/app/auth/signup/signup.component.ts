@@ -28,18 +28,18 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   // Passsword matcher
   passwordMatcher(group: FormGroup): any {
-    const password = group.get('password').value;
-    const confirmPassword = group.get('confirmPassword').value;
-    return password === confirmPassword ? null : { notSame: true };
+    const password = group.get('password');
+    const confirmPassword = group.get('confirmPassword');
+    return password && confirmPassword && password.value === confirmPassword.value ? null : { 'matcher': true };
   }
 
   ngOnInit(): void {
     this.signupForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required]]
-    }, {validators: this.passwordMatcher});
+    }, { validators: this.passwordMatcher});
 
     this.authStatusSub = this.authService.getAuthStatusListener()
       .subscribe(authStatus => {

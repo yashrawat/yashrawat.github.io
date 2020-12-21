@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/utils/auth.service';
@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/utils/auth.service';
 })
 export class AccountInfoComponent implements OnInit, OnDestroy {
 
+  @ViewChild('closeEditAccountDetailsModal') closeEditAccountDetailsModal: ElementRef;
   editAccountInfoDetails: FormGroup;
   userId;
   userInfo;
@@ -27,12 +28,16 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     const address = this.editAccountInfoDetails.get('address').value;
     this.authService.saveUserData(this.userId, name, email, mobileNumber, address);
     // *** modal code ***
-    // TODO: fix bootstrap error
-    // const myModal = document.getElementsByClassName('modal');
-    // myModal.modal.hide();
-    // const modal = bootstrap.Modal.getInstance(myModal);
-    // modal.hide();
+    this.closeEditAccountDetailsModal.nativeElement.click();
+    // // TODO: fix bootstrap error
+    // $('#product-options').modal('hide');
+    // const myModal = document.getElementsByClassName('modal').namedItem.modal('hide');
+    // document.onclick('click', );
+    // // myModal.modal('hide');
+    // // const modal = bootstrap.Modal.getInstance(myModal);
+    // // modal.hide();
     // this.editAccountInfoDetails.reset();
+
   }
 
   ngOnInit(): void {

@@ -7,9 +7,12 @@ import { AuthService } from './utils/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
   title = 'ECommerceStore';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.authService.autoAuthUser();

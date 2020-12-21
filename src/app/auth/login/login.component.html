@@ -10,13 +10,22 @@
       <div class="dropdown-divider"></div>
 
       <div class="form-group mt-4">
-        <label for="emailInput">Email address</label>
+        <label for="emailInput">Email address *</label>
         <input type="email" class="form-control" id="emailInput" formControlName="email" placeholder="Email address">
+        <!-- Email Error Messages -->
+        <div class="alert alert-danger" *ngIf="loginForm.get('email').invalid && (loginForm.get('email').dirty && loginForm.get('email').touched)">
+          <div *ngIf="loginForm.get('email').errors.required">Email is required</div>
+          <div *ngIf="loginForm.get('email').errors.email">Please enter a valid email</div>
+        </div>
       </div>
 
       <div class="form-group">
-        <label for="passwordInput">Password</label>
+        <label for="passwordInput">Password *</label>
         <input type="password" class="form-control" id="passwordInput" formControlName="password" placeholder="Password">
+        <!-- Password Error Messages -->
+        <div class="alert alert-danger" *ngIf="loginForm.get('password').invalid && loginForm.get('password').errors.required && (loginForm.get('password').dirty && loginForm.get('password').touched)">
+          Password is required
+        </div>
       </div>
 
       <button class="btn btn-primary btn-block my-4" type="submit" [disabled]="loginForm.invalid" *ngIf="!isLoading">Login</button>

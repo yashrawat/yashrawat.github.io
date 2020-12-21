@@ -2,9 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +20,8 @@ import { CartService } from './utils/cart.service';
 import { UserService } from './utils/user.service';
 import { AuthService } from './utils/auth.service';
 import { ProductService } from './utils/product.service';
+import { AuthInterceptor } from './auth/auth.interceptor';
+import { ErrorInterceptor } from './utils/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -38,13 +41,24 @@ import { ProductService } from './utils/product.service';
     AppRoutingModule,
     NgbModule,
     HttpClientModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [
     ProductService,
     CartService,
     UserService,
-    AuthService
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

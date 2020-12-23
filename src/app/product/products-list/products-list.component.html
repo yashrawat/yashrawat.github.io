@@ -15,6 +15,12 @@
     <p>No products loaded yet!</p>
   </div> -->
 
+  <div *ngIf="productData?.length < 1" class="row m-4 text-center">
+    <div class="alert alert-primary" role="alert">
+      No products loaded yet!
+    </div>
+  </div>
+
   <!-- <div class="row row-cols-1 row-cols-md-5 m-4" *ngIf="productData?.length > 0"> -->
   <div class="row row-cols-1 row-cols-md-5 m-4">
 
@@ -30,7 +36,7 @@
         </div>
         <div class="card-footer">
           <button type="button" class="btn btn-outline-primary btn-block" [routerLink]="['/product/product-details', product._id]">View Details</button>
-          <button type="button" class="btn btn-outline-primary btn-block" (click)="addToCart(product)">Add To Cart</button>
+          <button type="button" class="btn btn-outline-primary btn-block" (click)="addToCart(product._id)">Add To Cart</button>
         </div>
       </div>
     </div>

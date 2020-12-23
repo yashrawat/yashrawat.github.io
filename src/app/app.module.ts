@@ -17,11 +17,12 @@ import { ContactUsComponent } from './utils/contact-us/contact-us.component';
 import { FaqsComponent } from './utils/faqs/faqs.component';
 import { ErrorComponent } from './utils/error/error.component';
 import { CartService } from './utils/cart.service';
-import { UserService } from './utils/user.service';
 import { AuthService } from './utils/auth.service';
 import { ProductService } from './utils/product.service';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { ErrorInterceptor } from './utils/error.interceptor';
+import { WishlistService } from './utils/wishlist.service';
+import { OrderHistoryService } from './utils/order-history.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,6 @@ import { ErrorInterceptor } from './utils/error.interceptor';
   providers: [
     ProductService,
     CartService,
-    UserService,
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,
@@ -58,7 +58,9 @@ import { ErrorInterceptor } from './utils/error.interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
-    }
+    },
+    WishlistService,
+    OrderHistoryService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from 'src/app/utils/auth.service';
 import { CartService } from 'src/app/utils/cart.service';
-import { ProductService } from 'src/app/utils/product.service';
-import { UserService } from '../../utils/user.service';
+import { WishlistService } from 'src/app/utils/wishlist.service';
 
 @Component({
   selector: 'app-wishlist',
@@ -18,97 +16,38 @@ export class WishlistComponent implements OnInit, OnDestroy {
   wishlistSubs: Subscription;
   authUserId;
 
-  productData;
-  productDataSubs: Subscription;
-  productId;
-
-  wishlistWithProduct = [];
-  wishlistWithProductUnfiltered = [];
-
   constructor(
-    private userService: UserService,
     private authService: AuthService,
-    private productService: ProductService,
-    private cartService: CartService,
-    private router: Router
+    private wishlistService: WishlistService,
+    private cartService: CartService
   ) { }
 
-  // addItemToCart(product): any {
-  //   this.cartService.addToCart(product);
-  //   // this.removeItemFromWishlist(product.id);
-  //   this.router.navigate(['/product/cart-ui']);
-  // }
-
-  // removeItemFromWishlist(productId): any {
-  //   this.userService.removeItemFromWishlist(productId);
-  //   this.wishlist = this.userService.getWishlist();
-  // }
-
-  // -----------------------------------------------------------------------------------------------------------------
-
-  // TODO: add product to cart & then remove product from wishlist
-  addProductToCartFromWishlist(wishlistProduct): any {
+  addProductToCart(productData): any {
     const product = {
-      _id: wishlistProduct.productId,
-      productName: wishlistProduct.productName,
-      productContent: wishlistProduct.productContent,
-      imagePath: wishlistProduct.imagePath,
-      price: wishlistProduct.price,
-      quantity: wishlistProduct.quantity
+      productId: productData.productId._id,
+      quantity: 1
     };
-    console.log(product);
-    // this.removeProductFromWishlist(wishlistProduct.productId);
-    // this.router.navigate(['/product/cart-ui']);
+    this.cartService.addProductToCart(this.authUserId, product.productId, product.quantity);
+    this.removeProductFromWishlist(product.productId);
   }
 
-  // TODO: remove product from wishlist
-  removeProductFromWishlist(wishlistProductId): any {}
+  removeProductFromWishlist(productId): any {
+    this.wishlistService.removeProductFromWishlist(this.authUserId, productId);
+    this.wishlistService.getWishlistData(this.authUserId);
+    this.wishlist = this.wishlistService.getWishlist();
+  }
 
   ngOnInit(): void {
-    // get userEssentials data
     this.authUserId = this.authService.getUserId();
-    this.userService.getUserEssentialsData(this.authUserId);
-    this.wishlist = this.userService.getWishlist();
-    this.wishlistSubs = this.userService.getWishlistDataUpdated()
+    this.wishlistService.getWishlistData(this.authUserId);
+    this.wishlistSubs = this.wishlistService.getWishlistDataUpdated()
       .subscribe(fetchedWishlist => {
         this.wishlist = fetchedWishlist;
-
-        // get product by productId
-        this.wishlist.wishlist.forEach(data => {
-          this.productId = data.productId;
-          this.productData = this.productService.getProductById(this.productId);
-
-          this.productDataSubs = this.productService.getProductDataUpdated()
-            .subscribe(fetchedProduct => {
-              // got product data
-              this.productData = fetchedProduct.products;
-
-              // mapped wishlist & productData into wishlistWithProductUnfiltered
-              this.wishlistWithProductUnfiltered.push({
-                productId: data.productId,
-                // productId: fetchedProduct.products.productId,
-                productName: fetchedProduct.products.productName,
-                productContent: fetchedProduct.products.productContent,
-                imagePath: fetchedProduct.products.imagePath,
-                price: fetchedProduct.products.price,
-                quantity: data.quantity,
-              });
-
-              // filtered duplicate products from wishlistWithProductUnfiltered & then pushed unique products into wishlistWithProduct
-              this.wishlistWithProduct = this.wishlistWithProductUnfiltered.reduce((accumalator, current) => {
-                if (!(accumalator.some(item => item.productId !== current.productId))) {
-                  accumalator.push(current);
-                }
-                return accumalator;
-              }, []);
-            });
-        });
       });
   }
 
   ngOnDestroy(): void {
-    this.wishlistSubs?.unsubscribe();
-    this.productDataSubs?.unsubscribe();
+    this.wishlistSubs.unsubscribe();
   }
 
 }

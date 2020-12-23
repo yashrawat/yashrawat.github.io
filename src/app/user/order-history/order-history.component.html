@@ -1,5 +1,5 @@
 <!-- Empty orders list -->
-<div class="container my-4 text-center" *ngIf="ordersWithProduct?.length < 1">
+<div class="container my-4 text-center" *ngIf="orderHistory?.length < 1">
 
   <div class="alert alert-primary" role="alert">
     You have not ordered anything yet. Order now!
@@ -16,7 +16,7 @@
 
   <div class="row">
 
-    <div class="col" *ngIf="ordersWithProduct?.length > 0">
+    <div class="col" *ngIf="orderHistory?.length > 0">
     <!-- <div class="col"> -->
 
       <div class="display-4 my-4">Order History</div>
@@ -24,25 +24,25 @@
       <div class="dropdown-divider my-4"></div>
 
       <!-- Order Item (iterate orders here) -->
-      <div class="card mb-4" *ngFor="let order of ordersWithProduct">
+      <div class="card mb-4" *ngFor="let order of orderHistory">
         <div class="card-body">
 
           <div class="row">
 
             <div class="col">
-              <img [src]="order.imagePath">
+              <img [src]="order?.productId.imagePath">
             </div>
 
             <div class="col">
-              <div>{{ order.productName }}</div>
+              <div>{{ order?.productId.productName }}</div>
             </div>
 
-            <div class="col">{{ order.price | currency: 'INR' : symbol: '0.0' }}</div>
+            <div class="col">{{ order?.productId.price | currency: 'INR' : symbol: '0.0' }}</div>
 
             <div class="col-4">
-              <div>{{ order.orderDate | date }}</div>
-              <div>{{ order.deliveryAddress }}</div>
-              <div>{{ order.paymentMethod }}</div>
+              <div>{{ order?.orderDate | date }}</div>
+              <div>{{ address }}</div>
+              <div>{{ order?.paymentMethod }}</div>
             </div>
 
           </div>

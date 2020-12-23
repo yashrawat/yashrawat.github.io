@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { UserService } from './user.service';
 
 const BACKEND_URL = `${environment.apiUrl}/auth`;
 
@@ -26,8 +25,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private snackbar: MatSnackBar,
-    private userService: UserService
+    private snackbar: MatSnackBar
   ) { }
 
   openSnackbar(message, action): any {

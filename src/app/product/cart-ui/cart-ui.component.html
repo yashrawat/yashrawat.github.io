@@ -1,5 +1,5 @@
 <!-- cart empty -->
-<div class="container my-4 text-center" *ngIf="itemsUI?.length < 1">
+<div class="container my-4 text-center" *ngIf="cart?.length < 1">
 
   <div class="alert alert-primary" role="alert">
     No products added to cart
@@ -8,7 +8,7 @@
 </div>
 
 <!-- Cart not empty -->
-<div class="table-responsive container-fluid m-4" *ngIf="itemsUI?.length > 0">
+<div class="table-responsive container-fluid m-4" *ngIf="cart?.length > 0">
 
   <div class="display-4 mb-4">Cart</div>
 
@@ -26,25 +26,25 @@
 
     <tbody>
 
-      <tr *ngFor="let item of itemsUI">
+      <tr *ngFor="let item of cart">
 
         <td>
-          <img [src]="item.imagePath">
+          <img [src]="item.productId.imagePath">
         </td>
 
-        <td>{{ item.productName }}</td>
+        <td>{{ item.productId.productName }}</td>
 
-        <td>{{ item.price | currency: 'INR' : symbol: '3.0' }}</td>
+        <td>{{ item.productId.price | currency: 'INR' : symbol: '3.0' }}</td>
 
         <td>
           {{ item.quantity }}
-          <button type="button" class="btn" (click)="incrementQuantityButton(item._id)">
+          <button type="button" class="btn" (click)="incrementQuantityButton(item.productId._id)">
             <span class="material-icons">
               add
             </span>
           </button>
 
-          <button type="button" class="btn" (click)="decrementQuantityButton(item._id)">
+          <button type="button" class="btn" (click)="decrementQuantityButton(item.productId._id)">
             <span class="material-icons">
               remove
             </span>
@@ -52,7 +52,7 @@
         </td>
 
         <td>
-          <button type="button" class="btn" (click)="deleteCartItem(item._id)">
+          <button type="button" class="btn" (click)="removeProductFromCart(item.productId._id)">
             <span class="material-icons">
               delete
             </span>
@@ -67,9 +67,9 @@
 
 </div>
 
-<div class="dropdown-divider mb-4" *ngIf="itemsUI.length > 0"></div>
+<div class="dropdown-divider mb-4" *ngIf="cart?.length > 0"></div>
 
-<div class="container mt-4 text-center" *ngIf="itemsUI.length > 0">
+<div class="container mt-4 text-center" *ngIf="cart?.length > 0">
 
   <div class="col-4">
 

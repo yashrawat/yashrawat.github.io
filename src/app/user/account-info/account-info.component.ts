@@ -27,23 +27,11 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     const mobileNumber = this.editAccountInfoDetails.get('mobileNumber').value;
     const address = this.editAccountInfoDetails.get('address').value;
     this.authService.saveUserData(this.userId, name, email, mobileNumber, address);
-    // *** modal code ***
     this.closeEditAccountDetailsModal.nativeElement.click();
-    // // TODO: fix bootstrap error
-    // $('#product-options').modal('hide');
-    // const myModal = document.getElementsByClassName('modal').namedItem.modal('hide');
-    // document.onclick('click', );
-    // // myModal.modal('hide');
-    // // const modal = bootstrap.Modal.getInstance(myModal);
-    // // modal.hide();
-    // this.editAccountInfoDetails.reset();
 
   }
 
   ngOnInit(): void {
-    // FIX: Error is in ngOnInit
-    // 1. User data in card body is updating, but user data in modal form is not updating (modal updates on 2nd visit to
-    //    the account-info component)
     this.userId = this.authService.getUserId();
     this.authService.getUserById(this.userId);
     this.userInfo = this.authService.getUserData();

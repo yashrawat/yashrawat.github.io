@@ -1,18 +1,24 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 
-const BACKEND_URL = `${environment.apiUrl}/product`;
+const BACKEND_URL = `${environment.apiUrl}/cart`;
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  itemsService = [];
+  private cart;
+  private cartData = new Subject();
 
-  constructor(private snackbar: MatSnackBar) { }
+  constructor(
+    private snackbar: MatSnackBar,
+    private http: HttpClient
+  ) { }
 
   openSnackbar(message, action): any {
     this.snackbar.open(message, action, {
@@ -20,67 +26,57 @@ export class CartService {
     });
   }
 
-  // addToCart(product): any {
-  //   let itemExistInCart;
-  //   if (product.productId) {
-  //     itemExistInCart = this.itemsService.find(({_id}) => _id === product.productId);
-  //   } else {
-  //     itemExistInCart = this.itemsService.find(({_id}) => _id === product?._id);
-  //   }
-  //   if (!itemExistInCart) {
-  //     this.itemsService.push({...product, quantity: 1});
-  //     this.openSnackbar('Added to cart', 'Added');
-  //     return;
-  //   }
-  //   itemExistInCart.quantity += 1;
-  //   this.openSnackbar('Already in cart', 'Quantity Incremented');
+  getCart(): any {
+    return this.cart;
+  }
+
+  getCartDataUpdated(): any {
+    return this.cartData.asObservable();
+  }
+
+  // add product to cart
+  addProductToCart(authId, productId, quantity): any {
+    this.http.post<{ message: string; cart; }>(`${BACKEND_URL}/addProductToCart`, {authId, productId, quantity})
+      .subscribe(updatedCart => {
+        this.cart = updatedCart.cart;
+        this.cartData.next(this.cart);
+        this.openSnackbar('Added to cart', 'Added');
+      });
+  }
+
+  // get products from cart
+  getCartByAuthId(authId): any {
+    this.http.get<{ message: string; cart; }>(`${BACKEND_URL}/getCartByAuthId/${authId}`)
+      .subscribe(fetchedCart => {
+        this.cart = fetchedCart.cart;
+        this.cartData.next(this.cart);
+      });
+  }
+
+  // remove product from cart
+  removeProductFromCart(authId, productId): any {
+    this.http.put<{ message: string; cart; }>(`${BACKEND_URL}/removeProductFromCart`, {authId, productId})
+      .subscribe(updatedCart => {
+        this.cart = updatedCart.cart;
+        this.cartData.next(this.cart);
+        this.openSnackbar('Deleted from cart', 'Deleted');
+      });
+  }
+
+  // TODO
+  incrementQuantity(): any {
+    console.log('Increment quantity');
+  }
+
+  // TODO
+  decrementQuantity(): any {
+    console.log('Decrement quantity');
+  }
+
+  // clearCart(): any {
+  //   this.itemsService = [];
+  //   return this.itemsService;
   // }
-  addToCart(product): any {
-    console.log(product);
-    const itemExistInCart = this.itemsService.find(({_id}) => _id === product._id);
-    if (!itemExistInCart) {
-      this.itemsService.push({...product, quantity: 1});
-      this.openSnackbar('Added to cart', 'Added');
-      return;
-    }
-    itemExistInCart.quantity += 1;
-    this.openSnackbar('Already in cart', 'Quantity Incremented');
-  }
-
-  // TODO: does not work for wishlist added product because of id mapping issues
-  // (_id ---- productList, productDetails Product & productId ---- wishlist product)
-  deleteCartItem(pid): any {
-    this.itemsService = this.itemsService.filter(item => item._id !== pid);
-    this.openSnackbar('Deleted from cart', 'Deleted');
-  }
-
-  // TODO: does not work for wishlist added product because of id mapping issues
-  // (_id ---- productList, productDetails Product & productId ---- wishlist product)
-  quantityIncrement(pid): any {
-    const item = this.itemsService.find(({_id}) => _id === pid);
-    item.quantity += 1;
-    this.openSnackbar('Quantity Incremented', 'Incremented');
-  }
-
-  // TODO: does not work for wishlist added product because of id mapping issues
-  // (_id ---- productList, productDetails Product & productId ---- wishlist product)
-  quantityDecrement(pid): any {
-    const item = this.itemsService.find(({_id}) => _id === pid);
-    if (item.quantity <= 1) {
-      return;
-    }
-    item.quantity -= 1;
-    this.openSnackbar('Quantity Decremented', 'Decremented');
-  }
-
-  getItems(): any {
-    return this.itemsService;
-  }
-
-  clearCart(): any {
-    this.itemsService = [];
-    return this.itemsService;
-  }
 
   // Checkout
   // 1. Cartitems added to checkout (TODO: on placement of order, add these items to orderlist)

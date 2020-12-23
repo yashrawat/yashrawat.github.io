@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/utils/auth.service';
 
 import { CartService } from '../../utils/cart.service';
 
@@ -8,43 +10,60 @@ import { CartService } from '../../utils/cart.service';
   templateUrl: './cart-ui.component.html',
   styleUrls: ['./cart-ui.component.css']
 })
-export class CartUIComponent implements OnInit {
+export class CartUIComponent implements OnInit, OnDestroy {
 
-  itemsUI;
+  cart;
+  cartSubs: Subscription;
 
-  constructor(private cartService: CartService, private router: Router) { }
+  authId;
+
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   calculateTotalPrice(): any {
-    if (this.itemsUI) {
-      return this.itemsUI.map(grandTotal => grandTotal.price * grandTotal.quantity)
+    if (this.cart) {
+      return this.cart.map(grandTotal => grandTotal.productId.price * grandTotal.quantity)
         .reduce((a, value) =>
           a + value, 0
         );
     }
   }
 
-  incrementQuantityButton(id): any {
-    this.cartService.quantityIncrement(id);
+  incrementQuantityButton(productId): any {
+    // this.cartService.quantityIncrement(id);
   }
 
-  decrementQuantityButton(id): any {
-    this.cartService.quantityDecrement(id);
-  }
-
-  deleteCartItem(id): any {
-    this.cartService.deleteCartItem(id);
-    this.itemsUI = this.cartService.getItems();
+  decrementQuantityButton(productId): any {
+    // this.cartService.quantityDecrement(id);
   }
 
   onCheckout(): any {
     // TODO: write before checkout code
     // console.log(itemsUI);
     // this.cartService.onCheckout(itemsUI);
-    this.router.navigate(['/product/checkout']);
+    // this.router.navigate(['/product/checkout']);
+  }
+
+  removeProductFromCart(productId): any {
+    this.cartService.removeProductFromCart(this.authId, productId);
+    this.cartService.getCartByAuthId(this.authId);
+    this.cart = this.cartService.getCart();
   }
 
   ngOnInit(): void {
-    this.itemsUI = this.cartService.getItems();
+    this.authId = this.authService.getUserId();
+    this.cartService.getCartByAuthId(this.authId);
+    this.cartSubs = this.cartService.getCartDataUpdated()
+      .subscribe(fetchedCart => {
+        this.cart = fetchedCart.products;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.cartSubs.unsubscribe();
   }
 
 }

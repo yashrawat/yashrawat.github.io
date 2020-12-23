@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../utils/auth.service';
 
@@ -15,7 +14,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   isLoading = false;
   private authStatusSub: Subscription;
 
-  constructor(private fb: FormBuilder, public authService: AuthService, private router: Router) { }
+  constructor(private fb: FormBuilder, public authService: AuthService) { }
 
   onSignup(): void {
     if (this.signupForm.invalid) {

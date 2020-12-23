@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/utils/auth.service';
 
 import { CartService } from '../../utils/cart.service';
 import { ProductService } from '../../utils/product.service';
@@ -16,11 +17,13 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   productData;
   filteredData;
   productDataSubs: Subscription;
+  authId;
 
   constructor(
     private productService: ProductService,
     private fb: FormBuilder,
-    private cartService: CartService
+    private cartService: CartService,
+    private authService: AuthService
   ) { }
 
   filterSearch(): any {
@@ -28,11 +31,12 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.productService.filterSearchResults(searchTextResult);
   }
 
-  addToCart(product): any {
-    this.cartService.addToCart(product);
+  addToCart(productId): any {
+    this.cartService.addProductToCart(this.authId, productId, 1);
   }
 
   ngOnInit(): void {
+    this.authId = this.authService.getUserId();
     this.searchForm = this.fb.group({
       searchText: ['', [Validators.required]]
     });

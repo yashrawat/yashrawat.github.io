@@ -32,19 +32,20 @@ export class CartUIComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Check it
   incrementQuantityButton(productId): any {
-    // this.cartService.quantityIncrement(id);
+    console.log('increment quantity');
+    this.cartService.incrementQuantity(productId);
   }
 
+  // Check it
   decrementQuantityButton(productId): any {
-    // this.cartService.quantityDecrement(id);
+    console.log('decrement quantity');
+    this.cartService.decrementQuantity(productId);
   }
 
   onCheckout(): any {
-    // TODO: write before checkout code
-    // console.log(itemsUI);
-    // this.cartService.onCheckout(itemsUI);
-    // this.router.navigate(['/product/checkout']);
+    this.router.navigate(['/product/checkout']);
   }
 
   removeProductFromCart(productId): any {

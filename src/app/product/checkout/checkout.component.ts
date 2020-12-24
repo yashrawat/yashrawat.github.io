@@ -14,10 +14,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   paymentMethods = ['UPI', 'Credit Card', 'Debit Card', 'Net Banking', 'Wallet'];
   radioPaymentMethod;
-  itemsList;
-  userId;
+
   userData;
   userDataSubs: Subscription;
+
+  cart;
+  cartSubs: Subscription;
+  authId;
 
   constructor(
     private cartService: CartService,
@@ -25,48 +28,58 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private router: Router
   ) { }
 
-  // works
   // radio buttons change handler
   radioChangeHandler(event): any {
     this.radioPaymentMethod = event.target.value;
   }
 
-  // works
   calculateTotalPrice(): any {
-    if (this.itemsList) {
-      return this.itemsList.map(grandTotal => grandTotal.price * grandTotal.quantity)
+    if (this.cart) {
+      return this.cart.map(grandTotal => grandTotal.productId.price * grandTotal.quantity)
         .reduce((a, value) =>
           a + value, 0
         );
     }
   }
 
-  incrementQuantityButton(id): any {
-    this.cartService.quantityIncrement(id);
+  // check it
+  incrementQuantityButton(productId): any {
+    console.log('increment quantity');
+    this.cartService.incrementQuantity(productId);
   }
 
-  decrementQuantityButton(id): any {
-    this.cartService.quantityDecrement(id);
+  // check it
+  decrementQuantityButton(productId): any {
+    console.log('decrement quantity');
+    this.cartService.decrementQuantity(productId);
   }
 
-  deleteCartItem(id): any {
-    this.cartService.deleteCartItem(id);
-    this.itemsList = this.cartService.getItems();
+  deleteCartItem(productId): any {
+    this.cartService.removeProductFromCart(this.authId, productId);
+    this.cartService.getCartByAuthId(this.authId);
+    this.cart = this.cartService.getCart();
   }
 
-  // works
+  // check it
   onConfirmOrder(): any {
-    this.authService.confirmOrder(this.radioPaymentMethod);
+    this.cartService.confirmOrder(this.radioPaymentMethod, this.cart);
+    console.log('onConfirmOrder');
     this.router.navigate(['/product/order-confirmation']);
   }
 
   ngOnInit(): void {
-    // get itemsList Data
-    this.itemsList = this.cartService.getItems();
+    this.authId = this.authService.getUserId();
+
+    // get cart data
+    this.cart = this.cartService.getCartByAuthId(this.authId);
+    this.cartSubs = this.cartService.getCartDataUpdated()
+      .subscribe(fetchedCart => {
+        this.cart = fetchedCart.products;
+        console.log(this.cart);
+      });
 
     // get userData
-    this.userId = this.authService.getUserId();
-    this.authService.getUserById(this.userId);
+    this.authService.getUserById(this.authId);
     this.userData = this.authService.getUserData();
     this.userDataSubs = this.authService.getUserDataUpdated()
       .subscribe(fetchedUserData => {
@@ -76,6 +89,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): any {
     this.userDataSubs.unsubscribe();
+    this.cartSubs.unsubscribe();
   }
 
 }

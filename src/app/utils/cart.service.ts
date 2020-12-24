@@ -4,6 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
+import { AuthService } from './auth.service';
+import { OrderHistoryService } from './order-history.service';
 
 const BACKEND_URL = `${environment.apiUrl}/cart`;
 
@@ -14,16 +16,26 @@ export class CartService {
 
   private cart;
   private cartData = new Subject();
+  private paymentMethodValue;
+  private authId;
+  private date = Date.now();
+  private quantity;
 
   constructor(
     private snackbar: MatSnackBar,
-    private http: HttpClient
+    private http: HttpClient,
+    private orderHistoryService: OrderHistoryService,
+    private authService: AuthService
   ) { }
 
   openSnackbar(message, action): any {
     this.snackbar.open(message, action, {
       duration: 2000,
     });
+  }
+
+  getPaymentMethodValue(): any {
+    return this.paymentMethodValue;
   }
 
   getCart(): any {
@@ -36,7 +48,7 @@ export class CartService {
 
   // add product to cart
   addProductToCart(authId, productId, quantity): any {
-    this.http.post<{ message: string; cart; }>(`${BACKEND_URL}/addProductToCart`, {authId, productId, quantity})
+    this.http.post<{ message: string; cart; }>(`${BACKEND_URL}/addProductToCart`, { authId, productId, quantity })
       .subscribe(updatedCart => {
         this.cart = updatedCart.cart;
         this.cartData.next(this.cart);
@@ -55,7 +67,7 @@ export class CartService {
 
   // remove product from cart
   removeProductFromCart(authId, productId): any {
-    this.http.put<{ message: string; cart; }>(`${BACKEND_URL}/removeProductFromCart`, {authId, productId})
+    this.http.put<{ message: string; cart; }>(`${BACKEND_URL}/removeProductFromCart`, { authId, productId })
       .subscribe(updatedCart => {
         this.cart = updatedCart.cart;
         this.cartData.next(this.cart);
@@ -64,23 +76,29 @@ export class CartService {
   }
 
   // TODO
-  incrementQuantity(): any {
+  incrementQuantity(productId): any {
     console.log('Increment quantity');
   }
 
   // TODO
-  decrementQuantity(): any {
+  decrementQuantity(productId): any {
     console.log('Decrement quantity');
   }
 
-  // clearCart(): any {
-  //   this.itemsService = [];
-  //   return this.itemsService;
+  // TODO: add ordered items in orderHistory
+  // ordered product is added to orderHistory, but only one at a time
+  // Fix: allow to add multiple products to be added to orderHistory in single order
+  confirmOrder(paymentMethod, productIds): any {
+    const productId = [];
+    productIds.forEach(products => {
+      productId.push(products.productId._id);
+    });
+    this.paymentMethodValue = paymentMethod;
+    this.authId = this.authService.getUserId();
+    this.orderHistoryService.addProductToOrderHistory(this.authId, productId[0], 1, this.date, paymentMethod);
+  }
+
+  // testConfirmOrder(paymentMethod, productIds): any {
   // }
 
-  // Checkout
-  // 1. Cartitems added to checkout (TODO: on placement of order, add these items to orderlist)
-  // 2. also send value of payment method selected to orderlist
-  // 3. Fetch address of user, then on order placement send address to orderlist
-  // onCheckout(): any {}
 }

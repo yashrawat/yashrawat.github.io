@@ -11,18 +11,24 @@ import { CartService } from 'src/app/utils/cart.service';
 })
 export class OrderConfirmartionComponent implements OnInit, OnDestroy {
 
-  date = new Date();
-  itemsList;
   userData;
-  userId;
   userDataSubs: Subscription;
-  paymentMethodValue;
 
-  constructor(private cartService: CartService, private authService: AuthService) { }
+  paymentMethodValue;
+  date = new Date();
+
+  cart;
+  cartSubs: Subscription;
+  authId;
+
+  constructor(
+    private cartService: CartService,
+    private authService: AuthService
+  ) { }
 
   calculateTotalPrice(): any {
-    if (this.itemsList) {
-      return this.itemsList.map(grandTotal => grandTotal.price * grandTotal.quantity)
+    if (this.cart) {
+      return this.cart.map(grandTotal => grandTotal.productId.price * grandTotal.quantity)
         .reduce((a, value) =>
           a + value, 0
         );
@@ -30,19 +36,24 @@ export class OrderConfirmartionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // get itemsList Data
-    this.itemsList = this.cartService.getItems();
+    this.authId = this.authService.getUserId();
+
+    // get cart
+    this.cart = this.cartService.getCartByAuthId(this.authId);
+    this.cartSubs = this.cartService.getCartDataUpdated()
+      .subscribe(fetchedCart => {
+        this.cart = fetchedCart.products;
+      });
 
     // get userData
-    this.userId = this.authService.getUserId();
-    this.authService.getUserById(this.userId);
+    this.authService.getUserById(this.authId);
     this.userDataSubs = this.authService.getUserDataUpdated()
       .subscribe(fetchedUserData => {
         this.userData = fetchedUserData;
       });
 
     // get paymentMethodValue
-    this.paymentMethodValue = this.authService.getpaymentMethodValue();
+    this.paymentMethodValue = this.cartService.getPaymentMethodValue();
   }
 
   ngOnDestroy(): any {

@@ -21,8 +21,8 @@
     <p class="m-4 col">{{ productData?.price | currency: 'INR' : 'symbol' : '0.0' }}</p>
     <p class="m-4 col">
       <button type="button" class="btn" (click)="wishlistButtonClick()">
-        <span class="material-icons" *ngIf="!wishlistButton">favorite_border</span>
-        <span class="material-icons" *ngIf="wishlistButton">favorite</span>
+        <span class="material-icons" *ngIf="!productData?.isWishlisted">favorite_border</span>
+        <span class="material-icons" *ngIf="productData?.isWishlisted">favorite</span>
       </button>
     </p>
   </div>

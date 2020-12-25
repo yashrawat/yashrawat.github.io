@@ -18,7 +18,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   productDataSubs: Subscription;
   productId;
 
-  wishlistButton = false;
   wishlist;
   wishlistSubs: Subscription;
 
@@ -37,12 +36,12 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   wishlistButtonClick(): any {
-    if (!this.wishlistButton) {
-      this.addProductToWishlist();
-    } else {
+    if (this.productData.isWishlisted) {
       this.removeProductFromWishlist();
+    } else {
+      this.addProductToWishlist();
     }
-    return this.wishlistButton = !this.wishlistButton;
+    return this.productData.isWishlisted = !this.productData.isWishlisted;
   }
 
   addProductToWishlist(): any {
@@ -53,26 +52,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.wishlistService.removeProductFromWishlist(this.authId, this.productId);
   }
 
-  // wishlistButtonStatus(): any {
-  //   // TODO: match this product's id with all wishlist productIds,
-  //   // if id matches, set wishlistButton = true,
-  //   // else, set wishlistButton = false
-  //   this.wishlistService.getWishlistData(this.authId);
-  //   this.wishlistSubs = this.wishlistService.getWishlistDataUpdated()
-  //     .subscribe(fetchedWishlist => {
-  //       this.wishlist = fetchedWishlist;
-  //       // FIX: Since wishlist is not changing, so this is also not getting triggered
-  //       this.wishlist.forEach(data => {
-  //         if (data.productId._id === this.productId) {
-  //           this.wishlistButton = true;
-  //         } else {
-  //           this.wishlistButton = false;
-  //         }
-  //       });
-  //     })
-  // }
-
   ngOnInit(): void {
+    // getting productData
     this.authId = this.authService.getUserId();
     this.productId = this.route.snapshot.params.id;
     this.productDataSubs = this.productService.getProductDataUpdated()
@@ -81,28 +62,27 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       });
     this.productData = this.productService.getProductById(this.productId);
 
-    // TODO: match this product's id with all wishlist productIds,
-    // if id matches, set wishlistButton = true,
-    // else, set wishlistButton = false
+    // getting wishlist
     this.wishlistService.getWishlistData(this.authId);
     this.wishlistSubs = this.wishlistService.getWishlistDataUpdated()
       .subscribe(fetchedWishlist => {
         this.wishlist = fetchedWishlist;
-        // console.log(this.wishlist);
-        // FIX: Since wishlist is not changing, so this is also not getting triggered
-        this.wishlist.forEach(data => {
-          console.log(data.productId._id);
+
+        // settting wishlisted products
+        this.wishlist?.forEach(data => {
           if (data.productId._id === this.productId) {
-            this.wishlistButton = true;
+            data.productId.isWishlisted = true;
+            this.productData.isWishlisted = true;
           } else {
-            this.wishlistButton = false;
+            data.productId._id = false;
           }
         });
-      })
+      });
   }
 
   ngOnDestroy(): void {
     this.productDataSubs.unsubscribe();
+    this.wishlistSubs.unsubscribe();
   }
 
 }

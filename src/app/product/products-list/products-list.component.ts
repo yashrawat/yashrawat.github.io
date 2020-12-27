@@ -14,10 +14,17 @@ import { ProductService } from '../../utils/product.service';
 export class ProductsListComponent implements OnInit, OnDestroy {
 
   searchForm: FormGroup;
+
   productData;
   filteredData;
   productDataSubs: Subscription;
+
   authId;
+
+  cart;
+  cartSubs: Subscription;
+
+  resultArray;
 
   constructor(
     private productService: ProductService,
@@ -33,6 +40,13 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
   addToCart(productId): any {
     this.cartService.addProductToCart(this.authId, productId, 1);
+
+    // change button to added to cart, on button click
+    this.productData.forEach(product => {
+      if (product._id === productId) {
+        product.isAddedToCart = true;
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -40,15 +54,35 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.searchForm = this.fb.group({
       searchText: ['', [Validators.required]]
     });
+
     this.productData = this.productService.getProductData();
     this.productDataSubs = this.productService.getProductDataUpdated()
       .subscribe(productStatus => {
         this.productData = productStatus.products;
       });
+
+    // getting cart
+    this.cartService.getCartByAuthId(this.authId);
+    this.cartSubs = this.cartService.getCartDataUpdated()
+      .subscribe(fetchedCart => {
+        this.cart = fetchedCart.products;
+
+        // match productId of cart & productData, if productId match set button to added to cart from add to cart
+        this.resultArray = this.productData?.filter(o1 => {
+          return this.cart?.some(o2 => {
+            return o1._id === o2.productId._id;
+          });
+        });
+
+        this.resultArray?.forEach(filteredProducts => {
+          filteredProducts.isAddedToCart = true;
+        });
+      });
   }
 
   ngOnDestroy(): void {
     this.productDataSubs.unsubscribe();
+    this.cartSubs.unsubscribe();
   }
 
 }

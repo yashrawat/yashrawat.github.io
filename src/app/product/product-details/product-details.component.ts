@@ -21,6 +21,9 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   wishlist;
   wishlistSubs: Subscription;
 
+  cart;
+  cartSubs: Subscription;
+
   authId;
 
   constructor(
@@ -33,6 +36,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   addToCart(productId): any {
     this.cartService.addProductToCart(this.authId, productId, 1);
+    return this.productData.isAddedToCart = !this.productData.isAddedToCart;
   }
 
   wishlistButtonClick(): any {
@@ -78,11 +82,29 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
           }
         });
       });
+
+    // getting cart
+    this.cartService.getCartByAuthId(this.authId);
+    this.cartSubs = this.cartService.getCartDataUpdated()
+      .subscribe(fetchedCart => {
+        this.cart = fetchedCart.products;
+
+        // setting products that are added to cart
+        this.cart?.forEach(data => {
+          if (data.productId._id === this.productId) {
+            data.productId.isAddedToCart = true;
+            this.productData.isAddedToCart = true;
+          } else {
+            data.productId.isAddedToCart = false;
+          }
+        });
+      });
   }
 
   ngOnDestroy(): void {
     this.productDataSubs.unsubscribe();
     this.wishlistSubs.unsubscribe();
+    this.cartSubs.unsubscribe();
   }
 
 }

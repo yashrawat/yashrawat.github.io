@@ -28,7 +28,8 @@
   </div>
 
   <div class="row col-4 m-4">
-    <button type="button" class="btn btn-outline-primary btn-block" (click)="addToCart(productData)">Add To Cart</button>
+    <button *ngIf="!productData?.isAddedToCart" type="button" class="btn btn-primary btn-block" (click)="addToCart(productData)">Add To Cart</button>
+    <button *ngIf="productData?.isAddedToCart" type="button" class="btn btn-primary btn-block" disabled>Added To Cart</button>
   </div>
 
   <div class="dropdown-divider my-4"></div>

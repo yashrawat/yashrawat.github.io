@@ -75,14 +75,22 @@ export class CartService {
       });
   }
 
-  // TODO
-  incrementQuantity(productId): any {
-    console.log('Increment quantity');
+  incrementQuantity(authId, productId): any {
+    this.http.put<{ message: string; cart; }>(`${BACKEND_URL}/incrementQuantity`, {authId, productId})
+      .subscribe(updatedCart => {
+        this.cart = updatedCart.cart;
+        this.cartData.next(this.cart);
+        this.openSnackbar('Quantity Incremented', 'Incremented');
+      });
   }
 
-  // TODO
-  decrementQuantity(productId): any {
-    console.log('Decrement quantity');
+  decrementQuantity(authId, productId): any {
+    this.http.put<{ message: string; cart; }>(`${BACKEND_URL}/decrementQuantity`, {authId, productId})
+      .subscribe(updatedCart => {
+        this.cart = updatedCart.cart;
+        this.cartData.next(this.cart);
+        this.openSnackbar('Quantity Decremented', 'Decremented');
+      });
   }
 
   // TODO: add ordered items in orderHistory
@@ -97,8 +105,5 @@ export class CartService {
     this.authId = this.authService.getUserId();
     this.orderHistoryService.addProductToOrderHistory(this.authId, productId[0], 1, this.date, paymentMethod);
   }
-
-  // testConfirmOrder(paymentMethod, productIds): any {
-  // }
 
 }

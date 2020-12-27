@@ -78,13 +78,6 @@ export class AuthService {
       });
   }
 
-  // // pass payment method's value
-  // confirmOrder(paymentMethod): any {
-  //   this.paymentMethodValue = paymentMethod;
-  //   // TODO: add ordered items in order-history component
-  //   // this.userService.updateExistingUserEssentialsData(this.userId, paymentMethod);
-  // }
-
   // ***********************
   // login & signup feature
   // ***********************

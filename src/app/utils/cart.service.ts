@@ -93,8 +93,16 @@ export class CartService {
       });
   }
 
+  emptyCart(): any {
+    this.authId = this.authService.getUserId();
+    this.http.delete<{ message: string; cart; }>(`${BACKEND_URL}/emptyCart/${this.authId}`)
+      .subscribe(deletedCart => {
+        console.log(deletedCart);
+      });
+  }
+
   // TODO: add ordered items in orderHistory
-  // ordered product is added to orderHistory, but only one at a time
+  // ordered product is added to orderHistory, but only one product at a time
   // Fix: allow to add multiple products to be added to orderHistory in single order
   confirmOrder(paymentMethod, productIds): any {
     const productId = [];
@@ -103,7 +111,9 @@ export class CartService {
     });
     this.paymentMethodValue = paymentMethod;
     this.authId = this.authService.getUserId();
+    // TODO: fix on line 115
     this.orderHistoryService.addProductToOrderHistory(this.authId, productId[0], 1, this.date, paymentMethod);
+    this.emptyCart();
   }
 
 }

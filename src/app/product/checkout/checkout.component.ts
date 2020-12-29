@@ -63,7 +63,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   // check it
   onConfirmOrder(): any {
     this.cartService.confirmOrder(this.radioPaymentMethod, this.cart);
-    console.log('onConfirmOrder');
     this.router.navigate(['/product/order-confirmation']);
   }
 
@@ -75,7 +74,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.cartSubs = this.cartService.getCartDataUpdated()
       .subscribe(fetchedCart => {
         this.cart = fetchedCart.products;
-        console.log(this.cart);
       });
 
     // get userData

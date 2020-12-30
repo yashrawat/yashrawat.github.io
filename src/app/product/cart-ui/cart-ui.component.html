@@ -8,85 +8,88 @@
 </div>
 
 <!-- Cart not empty -->
-<div class="table-responsive container-fluid m-4" *ngIf="cart?.length > 0">
+<div class="container">
+  <div class="table-responsive m-4" *ngIf="cart?.length > 0">
 
-  <div class="display-4 mb-4">Cart</div>
+    <div class="display-4 mb-4">Cart</div>
 
-  <table class="table table-hover">
+    <table class="table table-hover">
 
-    <thead>
-      <tr>
-        <th scope="col" class="h4">Image</th>
-        <th scope="col" class="h4">Product Content</th>
-        <th scope="col" class="h4">Price</th>
-        <th scope="col" class="h4">Quantity</th>
-        <th scope="col" class="h4">Actions</th>
-      </tr>
-    </thead>
+      <thead>
+        <tr>
+          <th scope="col" class="h4">Image</th>
+          <th scope="col" class="h4">Product Content</th>
+          <th scope="col" class="h4">Price</th>
+          <th scope="col" class="h4">Quantity</th>
+          <th scope="col" class="h4">Actions</th>
+        </tr>
+      </thead>
 
-    <tbody>
+      <tbody>
 
-      <tr *ngFor="let item of cart">
+        <tr *ngFor="let item of cart">
 
-        <td>
-          <img [src]="item.productId.imagePath">
-        </td>
+          <td>
+            <img [src]="item.productId.imagePath">
+          </td>
 
-        <td>{{ item.productId.productName }}</td>
+          <td>{{ item.productId.productName }}</td>
 
-        <td>{{ item.productId.price | currency: 'INR' : symbol: '3.0' }}</td>
+          <td>{{ item.productId.price | currency: 'INR' : symbol: '3.0' }}</td>
 
-        <td>
-          {{ item.quantity }}
-          <button type="button" class="btn" (click)="incrementQuantityButton(item.productId._id)">
-            <span class="material-icons">
-              add
-            </span>
-          </button>
+          <td>
+            {{ item.quantity }}
+            <button type="button" class="btn" (click)="incrementQuantityButton(item.productId._id)">
+              <span class="material-icons">
+                add
+              </span>
+            </button>
 
-          <button type="button" class="btn" (click)="decrementQuantityButton(item.productId._id)">
-            <span class="material-icons">
-              remove
-            </span>
-          </button>
-        </td>
+            <button type="button" class="btn" (click)="decrementQuantityButton(item.productId._id)">
+              <span class="material-icons">
+                remove
+              </span>
+            </button>
+          </td>
 
-        <td>
-          <button type="button" class="btn" (click)="removeProductFromCart(item.productId._id)">
-            <span class="material-icons">
-              delete
-            </span>
-          </button>
-        </td>
+          <td>
+            <button type="button" class="btn" (click)="removeProductFromCart(item.productId._id)">
+              <span class="material-icons">
+                delete
+              </span>
+            </button>
+          </td>
 
-      </tr>
+        </tr>
 
-    </tbody>
+      </tbody>
 
-  </table>
-
-</div>
-
-<div class="dropdown-divider mb-4" *ngIf="cart?.length > 0"></div>
-
-<div class="container mt-4 text-center" *ngIf="cart?.length > 0">
-
-  <div class="col-4">
-
-    <p class="h4">
-      <strong>Grand Total</strong>
-    </p>
-
-    <br>
-
-    <p>{{ calculateTotalPrice() | currency: 'INR' : symbol: '0.0' }}</p>
-
-    <br>
-
-    <button class="btn btn-primary btn-block my-4" type="submit" (click)="onCheckout()">Proceed To Checkout</button>
+    </table>
 
   </div>
 
-</div>
+  <div class="dropdown-divider mb-4" *ngIf="cart?.length > 0"></div>
 
-<div class="dropdown-divider my-4"></div>
+  <div class="container mt-4 text-center" *ngIf="cart?.length > 0">
+
+    <div class="col-4">
+
+      <p class="h4">
+        <strong>Grand Total</strong>
+      </p>
+
+      <br>
+
+      <p>{{ calculateTotalPrice() | currency: 'INR' : symbol: '0.0' }}</p>
+
+      <br>
+
+      <button class="btn btn-primary btn-block my-4" type="submit" (click)="onCheckout()">Proceed To Checkout</button>
+
+    </div>
+
+  </div>
+
+  <div class="dropdown-divider mb-4"></div>
+
+</div>

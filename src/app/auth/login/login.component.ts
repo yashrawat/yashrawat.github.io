@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs/internal/Subscription';
 
-import { AuthService } from '../../utils/auth.service';
+import { AuthService } from '../../utils/Services/auth.service';
 
 @Component({
   selector: 'app-login',

@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/utils/auth.service';
+
+import { AuthService } from 'src/app/utils/Services/auth.service';
 
 @Component({
   selector: 'app-account-info',

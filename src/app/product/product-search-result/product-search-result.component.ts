@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/utils/auth.service';
-import { CartService } from 'src/app/utils/cart.service';
 
-import { ProductService } from '../../utils/product.service';
+import { AuthService } from 'src/app/utils/Services/auth.service';
+import { CartService } from 'src/app/utils/Services/cart.service';
+import { ProductService } from '../../utils/Services/product.service';
 
 @Component({
   selector: 'app-product-search-result',

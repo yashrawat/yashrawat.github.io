@@ -109,10 +109,11 @@ export class CartService {
     productIds.forEach(products => {
       productId.push(products.productId._id);
     });
+    console.log(productId);
     this.paymentMethodValue = paymentMethod;
     this.authId = this.authService.getUserId();
     // TODO: fix on line 115
-    this.orderHistoryService.addProductToOrderHistory(this.authId, productId[0], 1, this.date, paymentMethod);
+    this.orderHistoryService.addProductToOrderHistory(this.authId, productId, this.date, paymentMethod);
     this.emptyCart();
   }
 

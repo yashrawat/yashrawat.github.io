@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { AuthService } from 'src/app/utils/auth.service';
-import { WishlistService } from 'src/app/utils/wishlist.service';
-import { CartService } from '../../utils/cart.service';
-import { ProductService } from '../../utils/product.service';
+import { AuthService } from 'src/app/utils/Services/auth.service';
+import { WishlistService } from 'src/app/utils/Services/wishlist.service';
+import { CartService } from '../../utils/Services/cart.service';
+import { ProductService } from '../../utils/Services/product.service';
 
 @Component({
   selector: 'app-product-details',

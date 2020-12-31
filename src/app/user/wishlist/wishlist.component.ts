@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { AuthService } from 'src/app/utils/auth.service';
-import { CartService } from 'src/app/utils/cart.service';
-import { WishlistService } from 'src/app/utils/wishlist.service';
+import { AuthService } from 'src/app/utils/Services/auth.service';
+import { CartService } from 'src/app/utils/Services/cart.service';
+import { WishlistService } from 'src/app/utils/Services/wishlist.service';
 
 @Component({
   selector: 'app-wishlist',

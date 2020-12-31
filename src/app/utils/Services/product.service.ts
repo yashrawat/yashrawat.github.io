@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { Product } from '../product/product.model';
 
 const BACKEND_URL = `${environment.apiUrl}/product`;
 
@@ -14,8 +13,8 @@ const BACKEND_URL = `${environment.apiUrl}/product`;
 export class ProductService {
 
   filteredData = [];
-  private productData: Product[] = [];
-  private productDataUpdated = new Subject<{ products: Product[] }>();
+  private productData = [];
+  private productDataUpdated = new Subject<{ products }>();
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -41,7 +40,7 @@ export class ProductService {
   // Works
   // Get all products
   getProductData(): any {
-    this.http.get<{ message: string; products: Product[]; }>(`${BACKEND_URL}/allProducts`)
+    this.http.get<{ message: string; products; }>(`${BACKEND_URL}/allProducts`)
       .subscribe((fetchedProductsData) => {
         // this.productData = [];
         this.productData = fetchedProductsData.products;
@@ -52,7 +51,7 @@ export class ProductService {
   // Works
   // Get One Product By ID
   getProductById(productId): any {
-    this.http.get<{ message: string; products: Product[]; }>(`${BACKEND_URL}/productById/${productId}`)
+    this.http.get<{ message: string; products; }>(`${BACKEND_URL}/productById/${productId}`)
       .subscribe((fetchedProductData) => {
         // this.productData = [];
         this.productData = fetchedProductData.products;

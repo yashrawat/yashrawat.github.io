@@ -9,20 +9,20 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomepageComponent } from './utils/homepage/homepage.component';
-import { HeaderComponent } from './utils/header/header.component';
-import { FooterComponent } from './utils/footer/footer.component';
-import { PagenotfoundComponent } from './utils/pagenotfound/pagenotfound.component';
-import { ContactUsComponent } from './utils/contact-us/contact-us.component';
-import { FaqsComponent } from './utils/faqs/faqs.component';
-import { ErrorComponent } from './utils/error/error.component';
-import { CartService } from './utils/cart.service';
-import { AuthService } from './utils/auth.service';
-import { ProductService } from './utils/product.service';
-import { AuthInterceptor } from './auth/auth.interceptor';
-import { ErrorInterceptor } from './utils/error.interceptor';
-import { WishlistService } from './utils/wishlist.service';
-import { OrderHistoryService } from './utils/order-history.service';
+import { HomepageComponent } from './utils/Components/homepage/homepage.component';
+import { HeaderComponent } from './utils/Components/header/header.component';
+import { FooterComponent } from './utils/Components/footer/footer.component';
+import { PagenotfoundComponent } from './utils/Components/pagenotfound/pagenotfound.component';
+import { ContactUsComponent } from './utils/Components/contact-us/contact-us.component';
+import { FaqsComponent } from './utils/Components/faqs/faqs.component';
+import { ErrorComponent } from './utils/Components/error/error.component';
+import { CartService } from './utils/Services/cart.service';
+import { AuthService } from './utils/Services/auth.service';
+import { ProductService } from './utils/Services/product.service';
+import { WishlistService } from './utils/Services/wishlist.service';
+import { OrderHistoryService } from './utils/Services/order-history.service';
+import { AuthInterceptor } from './utils/Interceptors/auth.interceptor';
+import { ErrorInterceptor } from './utils/Interceptors/error.interceptor';
 
 @NgModule({
   declarations: [

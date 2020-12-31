@@ -31,8 +31,8 @@ export class OrderHistoryService {
   }
 
   // add product to orderHistory
-  addProductToOrderHistory(authId, productId, quantity, orderDate, paymentMethod): any {
-    this.http.post<{ message: string; orderHistory; }>(`${BACKEND_URL}/addProductToOrderHistory`, {authId, productId, quantity, orderDate, paymentMethod})
+  addProductToOrderHistory(authId, productId, orderDate, paymentMethod): any {
+    this.http.post<{ message: string; orderHistory; }>(`${BACKEND_URL}/addProductToOrderHistory`, {authId, productId, orderDate, paymentMethod})
       .subscribe(fetchedOrderHistory => {
         this.orderHistory = fetchedOrderHistory.orderHistory;
         this.orderHistoryData.next(this.orderHistory);

@@ -8,18 +8,12 @@ import { ProductRoutingModule } from './product-routing.module';
 import { ProductsListComponent } from './products-list/products-list.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductSearchResultComponent } from './product-search-result/product-search-result.component';
-import { CartUIComponent } from './cart-ui/cart-ui.component';
-import { CheckoutComponent } from './checkout/checkout.component';
-import { OrderConfirmartionComponent } from './order-confirmartion/order-confirmartion.component';
 
 @NgModule({
   declarations: [
     ProductsListComponent,
     ProductDetailsComponent,
-    ProductSearchResultComponent,
-    CartUIComponent,
-    CheckoutComponent,
-    OrderConfirmartionComponent
+    ProductSearchResultComponent
   ],
   imports: [
     CommonModule,

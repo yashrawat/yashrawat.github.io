@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/utils/auth.service';
 
-import { CartService } from '../../utils/cart.service';
-import { ProductService } from '../../utils/product.service';
+import { AuthService } from 'src/app/utils/Services/auth.service';
+import { CartService } from '../../utils/Services/cart.service';
+import { ProductService } from '../../utils/Services/product.service';
 
 @Component({
   selector: 'app-products-list',

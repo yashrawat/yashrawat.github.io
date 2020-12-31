@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { AuthService } from 'src/app/utils/auth.service';
-import { OrderHistoryService } from 'src/app/utils/order-history.service';
+import { AuthService } from 'src/app/utils/Services/auth.service';
+import { OrderHistoryService } from 'src/app/utils/Services/order-history.service';
 
 @Component({
   selector: 'app-order-history',

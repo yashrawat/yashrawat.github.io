@@ -19,7 +19,6 @@ export class CartService {
   private paymentMethodValue;
   private authId;
   private date = Date.now();
-  private quantity;
 
   constructor(
     private snackbar: MatSnackBar,
@@ -75,6 +74,7 @@ export class CartService {
       });
   }
 
+  // increment quantity of product
   incrementQuantity(authId, productId): any {
     this.http.put<{ message: string; cart; }>(`${BACKEND_URL}/incrementQuantity`, {authId, productId})
       .subscribe(updatedCart => {
@@ -84,6 +84,7 @@ export class CartService {
       });
   }
 
+  // decrement quantity of product
   decrementQuantity(authId, productId): any {
     this.http.put<{ message: string; cart; }>(`${BACKEND_URL}/decrementQuantity`, {authId, productId})
       .subscribe(updatedCart => {
@@ -93,6 +94,7 @@ export class CartService {
       });
   }
 
+  // empty cart
   emptyCart(): any {
     this.authId = this.authService.getUserId();
     this.http.delete<{ message: string; cart; }>(`${BACKEND_URL}/emptyCart/${this.authId}`)
@@ -101,19 +103,14 @@ export class CartService {
       });
   }
 
-  // TODO: add ordered items in orderHistory
-  // ordered product is added to orderHistory, but only one product at a time
-  // Fix: allow to add multiple products to be added to orderHistory in single order
   confirmOrder(paymentMethod, productIds): any {
     const productId = [];
     productIds.forEach(products => {
       productId.push(products.productId._id);
     });
-    console.log(productId);
     this.paymentMethodValue = paymentMethod;
     this.authId = this.authService.getUserId();
-    // TODO: fix on line 115
-    this.orderHistoryService.addProductToOrderHistory(this.authId, productId, this.date, paymentMethod);
+    this.orderHistoryService.addProductToOrderHistory(this.authId, productId[0], this.date, paymentMethod);
     this.emptyCart();
   }
 

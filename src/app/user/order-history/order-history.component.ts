@@ -26,7 +26,6 @@ export class OrderHistoryComponent implements OnInit, OnDestroy {
     this.orderHistory = this.orderHistoryService.getOrderHistoryByAuthId(this.authUserId);
     this.orderHistorySubs = this.orderHistoryService.getOrderHistoryDataUpdated()
       .subscribe(fetchedOrderHistory => {
-        console.log(fetchedOrderHistory.products);
         this.orderHistory = fetchedOrderHistory.products
           //sort by orderDate
           .sort((a, b) => Date.parse(b.orderDate) - Date.parse(a.orderDate));

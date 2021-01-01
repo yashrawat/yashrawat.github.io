@@ -18,10 +18,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   constructor(private dialog: MatDialog) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    // console.log(request);
-    if (request.headers.get('skip')) {
-      return next.handle(request);
-    }
     return next.handle(request)
       .pipe(
         catchError((error: HttpErrorResponse) => {

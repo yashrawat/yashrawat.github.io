@@ -49,8 +49,4 @@ export class OrderHistoryService {
       });
   }
 
-  // No use case as of now
-  // remove Product From Wishlist
-  // removeProductFromOrderHistory(): any {}
-
 }

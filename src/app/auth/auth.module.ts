@@ -19,7 +19,6 @@ import { LoginComponent } from './login/login.component';
     ReactiveFormsModule,
     HttpClientModule,
     MatSnackBarModule
-  ],
-  providers: []
+  ]
 })
 export class AuthModule { }

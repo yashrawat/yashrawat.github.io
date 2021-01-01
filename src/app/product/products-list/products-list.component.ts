@@ -55,6 +55,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       searchText: ['', [Validators.required]]
     });
 
+    // get productData
     this.productData = this.productService.getProductData();
     this.productDataSubs = this.productService.getProductDataUpdated()
       .subscribe(productStatus => {

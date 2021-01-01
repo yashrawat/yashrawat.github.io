@@ -24,7 +24,9 @@
         </div>
         <div class="card-footer">
           <button type="button" class="btn btn-outline-primary btn-block" [routerLink]="['/product/product-details', data._id]">View Details</button>
-          <button type="button" class="btn btn-outline-primary btn-block" (click)="addToCart(data._id)">Add To Cart</button>
+
+          <button *ngIf="!data.isAddedToCart" type="button" class="btn btn-outline-primary btn-block" (click)="addToCart(data._id)">Add To Cart</button>
+          <button *ngIf="data.isAddedToCart" type="button" class="btn btn-primary btn-block disabled">Added To Cart</button>
         </div>
       </div>
     </div>

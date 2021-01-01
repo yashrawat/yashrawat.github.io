@@ -17,7 +17,6 @@ import { WishlistComponent } from './wishlist/wishlist.component';
     CommonModule,
     UserRoutingModule,
     ReactiveFormsModule
-  ],
-  providers: []
+  ]
 })
 export class UserModule { }

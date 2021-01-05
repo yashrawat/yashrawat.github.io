@@ -27,18 +27,18 @@
     <!-- Product Card -->
     <div class="col mb-4" *ngFor="let product of productData">
       <div class="card h-100 text-center">
-        <img [src]="product.imagePath" class="card-img-top">
+        <img [src]="product?.imagePath" class="card-img-top">
         <div class="card-body">
-          <h5 class="card-title">{{ product.productName }}</h5>
+          <h5 class="card-title">{{ product?.productName }}</h5>
           <p class="card-text">
-            {{ product.price | currency: 'INR' : symbol: '0.0' }}
+            {{ product?.price | currency: 'INR' : symbol: '0.0' }}
           </p>
         </div>
         <div class="card-footer">
-          <button type="button" class="btn btn-outline-primary btn-block" [routerLink]="['/product/product-details', product._id]">View Details</button>
+          <button type="button" class="btn btn-outline-primary btn-block" [routerLink]="['/product/product-details', product?._id]">View Details</button>
 
-          <button *ngIf="!product.isAddedToCart" type="button" class="btn btn-outline-primary btn-block" (click)="addToCart(product._id)">Add To Cart</button>
-          <button *ngIf="product.isAddedToCart" type="button" class="btn btn-primary btn-block disabled">Added To Cart</button>
+          <button *ngIf="!product?.isAddedToCart" type="button" class="btn btn-outline-primary btn-block" (click)="addToCart(product?._id)">Add To Cart</button>
+          <button *ngIf="product?.isAddedToCart" type="button" class="btn btn-primary btn-block disabled">Added To Cart</button>
         </div>
       </div>
     </div>

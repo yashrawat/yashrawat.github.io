@@ -40,6 +40,8 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
   addToCart(productId): any {
     this.cartService.addProductToCart(this.authId, productId, 1);
+    this.cartService.getCartByAuthId(this.authId);
+    this.cart = this.cartService.getCart();
 
     // change button to added to cart, on button click
     this.productData.forEach(product => {
@@ -64,6 +66,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
     // getting cart
     this.cartService.getCartByAuthId(this.authId);
+    this.cart = this.cartService.getCart();
     this.cartSubs = this.cartService.getCartDataUpdated()
       .subscribe(fetchedCart => {
         this.cart = fetchedCart.products;

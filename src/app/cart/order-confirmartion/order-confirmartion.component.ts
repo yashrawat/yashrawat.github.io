@@ -40,6 +40,7 @@ export class OrderConfirmartionComponent implements OnInit, OnDestroy {
 
     // get cart
     this.cart = this.cartService.getCartByAuthId(this.authId);
+    this.cart = this.cartService.getCart();
     this.cartSubs = this.cartService.getCartDataUpdated()
       .subscribe(fetchedCart => {
         this.cart = fetchedCart.products;

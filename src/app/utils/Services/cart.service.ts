@@ -76,7 +76,7 @@ export class CartService {
 
   // increment quantity of product
   incrementQuantity(authId, productId): any {
-    this.http.put<{ message: string; cart; }>(`${BACKEND_URL}/incrementQuantity`, {authId, productId})
+    this.http.put<{ message: string; cart; }>(`${BACKEND_URL}/incrementQuantity`, { authId, productId })
       .subscribe(updatedCart => {
         this.cart = updatedCart.cart;
         this.cartData.next(this.cart);
@@ -86,7 +86,7 @@ export class CartService {
 
   // decrement quantity of product
   decrementQuantity(authId, productId): any {
-    this.http.put<{ message: string; cart; }>(`${BACKEND_URL}/decrementQuantity`, {authId, productId})
+    this.http.put<{ message: string; cart; }>(`${BACKEND_URL}/decrementQuantity`, { authId, productId })
       .subscribe(updatedCart => {
         this.cart = updatedCart.cart;
         this.cartData.next(this.cart);
@@ -99,7 +99,9 @@ export class CartService {
     this.authId = this.authService.getUserId();
     this.http.delete<{ message: string; cart; }>(`${BACKEND_URL}/emptyCart/${this.authId}`)
       .subscribe(deletedCart => {
-        console.log(deletedCart);
+        this.getCartByAuthId(this.authId);
+        this.cart = this.getCart();
+        this.cartData.next(this.cart);
       });
   }
 
@@ -112,6 +114,9 @@ export class CartService {
     this.authId = this.authService.getUserId();
     this.orderHistoryService.addProductToOrderHistory(this.authId, productId[0], this.date, paymentMethod);
     this.emptyCart();
+    this.getCartByAuthId(this.authId);
+    this.cart = this.getCart();
+    this.cartData.next(this.cart);
   }
 
 }

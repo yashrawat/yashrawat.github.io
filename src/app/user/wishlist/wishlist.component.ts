@@ -14,7 +14,7 @@ export class WishlistComponent implements OnInit, OnDestroy {
 
   wishlist;
   wishlistSubs: Subscription;
-  authUserId;
+  authId;
 
   constructor(
     private authService: AuthService,
@@ -27,19 +27,22 @@ export class WishlistComponent implements OnInit, OnDestroy {
       productId: productData.productId._id,
       quantity: 1
     };
-    this.cartService.addProductToCart(this.authUserId, product.productId, product.quantity);
+    this.cartService.addProductToCart(this.authId, product.productId, product.quantity);
     this.removeProductFromWishlist(product.productId);
+    this.wishlistService.getWishlistData(this.authId);
+    this.wishlist = this.wishlistService.getWishlist();
   }
 
   removeProductFromWishlist(productId): any {
-    this.wishlistService.removeProductFromWishlist(this.authUserId, productId);
-    this.wishlistService.getWishlistData(this.authUserId);
+    this.wishlistService.removeProductFromWishlist(this.authId, productId);
+    this.wishlistService.getWishlistData(this.authId);
     this.wishlist = this.wishlistService.getWishlist();
   }
 
   ngOnInit(): void {
-    this.authUserId = this.authService.getUserId();
-    this.wishlistService.getWishlistData(this.authUserId);
+    this.authId = this.authService.getUserId();
+    this.wishlistService.getWishlistData(this.authId);
+    this.wishlist = this.wishlistService.getWishlist();
     this.wishlistSubs = this.wishlistService.getWishlistDataUpdated()
       .subscribe(fetchedWishlist => {
         this.wishlist = fetchedWishlist;

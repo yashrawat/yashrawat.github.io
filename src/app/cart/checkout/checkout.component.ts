@@ -70,7 +70,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.authId = this.authService.getUserId();
 
     // get cart data
-    this.cart = this.cartService.getCartByAuthId(this.authId);
+    this.cartService.getCartByAuthId(this.authId);
+    this.cart = this.cartService.getCart();
     this.cartSubs = this.cartService.getCartDataUpdated()
       .subscribe(fetchedCart => {
         this.cart = fetchedCart.products;

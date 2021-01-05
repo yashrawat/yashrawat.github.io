@@ -13,7 +13,7 @@ export class OrderHistoryComponent implements OnInit, OnDestroy {
 
   orderHistory;
   orderHistorySubs: Subscription;
-  authUserId;
+  authId;
   address;
 
   constructor(
@@ -22,8 +22,9 @@ export class OrderHistoryComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.authUserId = this.authService.getUserId();
-    this.orderHistory = this.orderHistoryService.getOrderHistoryByAuthId(this.authUserId);
+    this.authId = this.authService.getUserId();
+    this.orderHistoryService.getOrderHistoryByAuthId(this.authId);
+    this.orderHistory = this.orderHistoryService.getOrderHistory();
     this.orderHistorySubs = this.orderHistoryService.getOrderHistoryDataUpdated()
       .subscribe(fetchedOrderHistory => {
         this.orderHistory = fetchedOrderHistory.products

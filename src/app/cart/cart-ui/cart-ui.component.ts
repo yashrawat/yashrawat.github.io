@@ -35,16 +35,18 @@ export class CartUIComponent implements OnInit, OnDestroy {
   incrementQuantityButton(productId): any {
     this.cartService.incrementQuantity(this.authId, productId);
     this.cartService.getCartByAuthId(this.authId);
-    this.cartService.getCart();
+    this.cart = this.cartService.getCart();
   }
 
   decrementQuantityButton(productId): any {
     this.cartService.decrementQuantity(this.authId, productId);
     this.cartService.getCartByAuthId(this.authId);
-    this.cartService.getCart();
+    this.cart = this.cartService.getCart();
   }
 
   onCheckout(): any {
+    this.cartService.getCartByAuthId(this.authId);
+    this.cart = this.cartService.getCart();
     this.router.navigate(['/cart/checkout']);
   }
 
@@ -56,7 +58,10 @@ export class CartUIComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.authId = this.authService.getUserId();
+
+    // get cart
     this.cartService.getCartByAuthId(this.authId);
+    this.cart = this.cartService.getCart();
     this.cartSubs = this.cartService.getCartDataUpdated()
       .subscribe(fetchedCart => {
         this.cart = fetchedCart.products;
